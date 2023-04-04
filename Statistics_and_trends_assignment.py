@@ -14,7 +14,7 @@ def read_data(filename):
     The below function reads data and returns pandas dataframe object.
     """
     # Reads data from csv file
-    dataframe = pd.read_csv(filename, skiprows=4)
+    dataframe = pd.read_csv(filename, skiprows = 4)
     # Returns the dataframe
     return dataframe
 
@@ -25,18 +25,18 @@ def filter_data(dataframe, column, value, countries, years):
     transpose of the dataframe.
     """
     # Groups data with column value
-    filtered_data = dataframe.groupby(column, group_keys=True)
+    filtered_data = dataframe.groupby(column, group_keys = True)
     # Retrives the data
     filtered_data = filtered_data.get_group(value)
     # Resets the index
     filtered_data = filtered_data.reset_index()
     # Sets Country Name as the new index of the filtered_data
-    filtered_data.set_index('Country Name', inplace=True)
+    filtered_data.set_index('Country Name', inplace = True)
     # filter the data from dataframe
     filtered_data = filtered_data.loc[:, years]
     filtered_data = filtered_data.loc[countries, :]
     # Drops the NAN values from dataframe
-    filtered_data = filtered_data.dropna(axis=1)
+    filtered_data = filtered_data.dropna(axis = 1)
     # Resets the index
     filtered_data = filtered_data.reset_index()
     # Transposing the index of the dataframe
@@ -51,21 +51,43 @@ def bar_plot(dataset, title, xlabel, ylabel):
     The function below is used to generate a bar plot.
     """
     # Creates a bar plot from the dataset DataFrame
-    dataset.plot.bar(x='Country Name', rot=0, figsize=(50, 25), fontsize=50)
+    dataset.plot.bar(x = 'Country Name', rot = 0, figsize = (50, 25), fontsize = 50)
     # Sets the location of the y-axis ticks
     plt.yticks([0, 20, 40, 60, 80, 100])
-    plt.legend(fontsize=50)
+    plt.legend(fontsize = 50)
     # Sets title and font size for plot
-    plt.title(title.upper(), fontsize=60, fontweight='bold')
-    # Sets x-label and font size for plot axes
-    plt.xlabel(xlabel, fontsize=60)
+    plt.title(title.upper(), fontsize = 60, fontweight = 'bold')
+    # Sets x-label and font size for plot axes 
+    plt.xlabel(xlabel, fontsize = 60)
     # Sets y-label and font size for plot axes
-    plt.ylabel(ylabel, fontsize=60)
+    plt.ylabel(ylabel, fontsize = 60)
     # Saves bar plot figure as png
     plt.savefig(title + '.png')
     # Function to show the plot
     plt.show()
     return
+
+def line_plot(dataset, title, xlabel, ylabel):
+    """ 
+    The function below is used to generate a line plot.
+    """
+    # Creates a line plot from the dataset DataFrame
+    dataset.plot.line(figsize = (50, 30), fontsize = 60, linewidth = 6.0)
+    # Sets the location of the y-axis ticks
+    plt.yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    # Sets title and font size for plot
+    plt.title(title.upper(), fontsize = 70, fontweight = 'bold')
+    # Sets x-label and font size for plot axes
+    plt.xlabel(xlabel, fontsize = 70)
+    # Sets y-label and font size for plot axes
+    plt.ylabel(ylabel, fontsize = 70)
+    plt.legend(fontsize = 60)
+    # Saves line plot figure as png
+    plt.savefig(title + '.png')
+    # Function to show the plot
+    plt.show()
+    return
+
 
 
 # Creating list of countries and years for plotting bar plot
@@ -84,9 +106,32 @@ bar_plot(world_data1, 'Urban population (% of total population)',
 
 world_data2, transdata2 = filter_data(
     world_data, 'Indicator Name', 'Access to electricity (% of population)', country1, year1)
-
+# Prints filtered data and transposed data
 print(world_data2)
 print(transdata2)
+
 # Calling another bar plot function with indicator as Access to electricity
 bar_plot(world_data2, 'Access to Electricity (% of population)',
          'Countries', 'Percentage of Electricity access')
+# Creating list of countries and years for plotting line plot
+country2 = ['Vietnam', 'Myanmar', 'Pakistan', 'Bulgaria', 'Cuba']
+year2 = ['1990', '1995', '2000', '2005', '2010']
+world_data3, transdata3 = filter_data(
+    world_data, 'Indicator Name', 'Agricultural land (% of land area)', country2, year2)
+# Prints filtered data and transposed data
+print(world_data3)
+print(transdata3)
+
+# Calling line plot function with indicator as Agricultural land
+line_plot(transdata3, 'Agricultural land (% of land area)',
+          'Year', 'Agricultural land (% of land area)')
+
+world_data4, transdata4 = filter_data(
+    world_data, 'Indicator Name', 'Forest area (% of land area)', country2, year2)
+# Prints filtered data and transposed data
+print(world_data4)
+print(transdata4)
+
+# Calling another line plot function with indicator as Forest land
+line_plot(transdata4, 'Forest area (% of land area)',
+          'Year', 'Forest area (% of land area)')
