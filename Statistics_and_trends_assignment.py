@@ -113,12 +113,12 @@ def heat_map(data):
     """
     The below function visualizes correlation between different indicators.
     """
-    plt.figure(figsize=(80, 40))
-    sns.heatmap(data.corr(), annot=True)
+    plt.figure(figsize = (80, 40))
+    sns.heatmap(data.corr(), annot=True, annot_kws={"size": 32})
     # Sets title for plot
-    plt.title("Brazil's Heatmap".upper(), size = 40, fontweight='bold')
+    plt.title("Brazil's Heatmap".upper(), size = 40, fontweight = 'bold')
     plt.xticks(rotation = 90, horizontalalignment = "center", fontsize = 30)
-    plt.yticks(rotation = 0,fontsize = 30)
+    plt.yticks(rotation = 0, fontsize = 30)
     #saving Heatmap image as png
     plt.savefig('Heatmap.png', dpi = 300, bbox_inches='tight')
     plt.show()
