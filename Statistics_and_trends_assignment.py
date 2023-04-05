@@ -7,6 +7,7 @@ Created on Sun Apr 02 20:18:17 2023
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 def read_data(filename):
@@ -88,7 +89,39 @@ def line_plot(dataset, title, xlabel, ylabel):
     plt.show()
     return
 
+def stat_data(dataframe, col, value, yr, a):
+    """
+    Reading a dataframe with multiple indicators and returns a dataframe
+    where dataframe will be used for the Heat Map
+    """
+    # Groups the rows of dataframe by the values of the col column
+    df3 = dataframe.groupby(col, group_keys=True)
+    # Retrieves the data with group_by element
+    df3 = df3.get_group(value)
+    # Resets the index of the dataframe
+    df3 = df3.reset_index()
+    df3.set_index('Indicator Name', inplace=True)
+    df3 = df3.loc[:, yr]
+    #transposing the index of the dataframe
+    df3 = df3.transpose()
+    df3 = df3.loc[:, a]
+    return df3  # returns dataframe required for Heatmap
 
+
+def heat_map(data):
+    """
+    The below function visualizes correlation between different indicators.
+    """
+    plt.figure(figsize=(80, 40))
+    sns.heatmap(data.corr(), annot=True)
+    # Sets title for plot
+    plt.title("Brazil's Heatmap".upper(), size = 40, fontweight='bold')
+    plt.xticks(rotation = 90, horizontalalignment = "center", fontsize = 30)
+    plt.yticks(rotation = 0,fontsize = 30)
+    #saving Heatmap image as png
+    plt.savefig('Heatmap.png', dpi = 300, bbox_inches='tight')
+    plt.show()
+    return data
 
 # Creating list of countries and years for plotting bar plot
 country1 = ['Ethiopia', 'Peru', 'India', 'Nigeria']
@@ -135,3 +168,14 @@ print(transdata4)
 # Calling another line plot function with indicator as Forest land
 line_plot(transdata4, 'Forest area (% of land area)',
           'Year', 'Forest area (% of land area)')
+
+# Creating a variable with years
+year_heat = ['2000', '2004', '2008', '2012', '2016']
+#creating a variable indicators for HeatMap
+indicators = ['Forest area (% of land area)', 'Agricultural land (% of land area)', 
+              'Urban population (% of total population)','Access to electricity (% of population)', 'Cereal yield (kg per hectare)', 'Annual freshwater withdrawals, total (% of internal resources)']
+dataheat = stat_data(world_data, 'Country Name',
+                     'Brazil', year_heat, indicators)
+print(dataheat.head())
+#Calling a function to create heatmap
+heat_map(dataheat)
