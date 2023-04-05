@@ -8,6 +8,7 @@ Created on Sun Apr 02 20:18:17 2023
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import scipy.stats as stats
 
 
 def read_data(filename):
@@ -179,3 +180,20 @@ dataheat = stat_data(world_data, 'Country Name',
 print(dataheat.head())
 #Calling a function to create heatmap
 heat_map(dataheat)
+
+start = 2000
+end = 2020
+yeardes = [str(i) for i in range(start, end+1)]
+indicator2 = ['Population growth (annual %)', 'Electricity production from oil sources (% of total)',
+              'Electricity production from nuclear sources (% of total)', 'Electricity production from natural gas sources (% of total)']
+descr = stat_data(world_data, 'Country Name',
+                'United Arab Emirates', yeardes, indicator2)
+# returns a summary of descriptive statistics for a dataset
+stats_summary = descr.describe()
+print(stats_summary)
+skewness = stats.skew(descr['Population growth (annual %)'])
+kurtosis = descr['Electricity production from oil sources (% of total)'].kurtosis()
+print('Skewness of Population growth in United Arab Emirates : ', skewness)
+print('Kurtosis of Electricity production from natural gas in United Arab Emirates : ', kurtosis)
+# saves result to a csv file
+stats_summary.to_csv('statistics_report.csv')
