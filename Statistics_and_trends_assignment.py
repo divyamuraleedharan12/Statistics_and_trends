@@ -76,7 +76,7 @@ def line_plot(dataset, title, xlabel, ylabel):
     # Creates a line plot from the dataset DataFrame
     dataset.plot.line(figsize = (50, 30), fontsize = 60, linewidth = 6.0)
     # Sets the location of the y-axis ticks
-    plt.yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    plt.yticks([0,10,20,30,40,50,60,70,80])
     # Sets title and font size for plot
     plt.title(title.upper(), fontsize = 70, fontweight = 'bold')
     # Sets x-label and font size for plot axes
@@ -113,19 +113,19 @@ def heat_map(data):
     """
     The below function visualizes correlation between different indicators.
     """
-    plt.figure(figsize = (80, 40))
+    plt.figure(figsize = (80, 50))
     sns.heatmap(data.corr(), annot = True, annot_kws = {"size": 32})
     # Sets title for plot
     plt.title("Brazil's Heatmap".upper(), size = 40, fontweight = 'bold')
-    plt.xticks(rotation = 90, horizontalalignment = "center", fontsize = 30)
-    plt.yticks(rotation = 0, fontsize = 30)
+    plt.xticks(rotation = 90, horizontalalignment = "center", fontsize = 50)
+    plt.yticks(rotation = 0, fontsize = 50)
     #saving Heatmap image as png
     plt.savefig('Heatmap.png', dpi = 300, bbox_inches = 'tight')
     plt.show()
     return data
 
 # Creating list of countries and years for plotting bar plot
-country1 = ['Ethiopia', 'Peru', 'India', 'Nigeria']
+country1 = ['Ethiopia', 'Peru', 'India', 'Nigeria','Angola']
 year1 = ['2000', '2005', '2010', '2015', '2020']
 # Reads data from csv file
 world_data = read_data("climate_change.csv")
@@ -148,7 +148,7 @@ print(transdata2)
 bar_plot(world_data2, 'Access to Electricity (% of population)',
          'Countries', 'Percentage of Electricity access')
 # Creating list of countries and years for plotting line plot
-country2 = ['Vietnam', 'Myanmar', 'Pakistan', 'Bulgaria', 'Cuba']
+country2 = ['Vietnam', 'Sri Lanka', 'Pakistan', 'Bulgaria', 'Cuba']
 year2 = ['1990', '1995', '2000', '2005', '2010']
 world_data3, transdata3 = filter_data(
     world_data, 'Indicator Name', 'Agricultural land (% of land area)', country2, year2)
@@ -161,19 +161,19 @@ line_plot(transdata3, 'Agricultural land (% of land area)',
           'Year', 'Agricultural land (% of land area)')
 
 world_data4, transdata4 = filter_data(
-    world_data, 'Indicator Name', 'Forest area (% of land area)', country2, year2)
+    world_data, 'Indicator Name', 'Arable land (% of land area)', country2, year2)
 # Prints filtered data and transposed data
 print(world_data4)
 print(transdata4)
 
 # Calling another line plot function with indicator as Forest land
-line_plot(transdata4, 'Forest area (% of land area)',
-          'Year', 'Forest area (% of land area)')
+line_plot(transdata4, 'Arable land (% of land area)',
+          'Year', 'Arable land (% of land area)')
 
 # Creating a variable with years
 year_heat = ['2000', '2004', '2008', '2012', '2016']
 #creating a variable indicators for HeatMap
-indicators = ['Forest area (% of land area)', 'Agricultural land (% of land area)', 
+indicators = ['Arable land (% of land area)', 'Agricultural land (% of land area)', 
               'Urban population (% of total population)','Access to electricity (% of population)', 'Cereal yield (kg per hectare)', 'Annual freshwater withdrawals, total (% of internal resources)']
 dataheat = stat_data(world_data, 'Country Name',
                      'Brazil', year_heat, indicators)
@@ -185,7 +185,7 @@ start = 2000
 end = 2020
 yeardes = [str(i) for i in range(start, end+1)]
 indicator2 = ['Population growth (annual %)', 'Electricity production from oil sources (% of total)',
-              'Electricity production from nuclear sources (% of total)', 'Electricity production from natural gas sources (% of total)']
+              'CO2 emissions from solid fuel consumption (% of total)', 'Electricity production from natural gas sources (% of total)']
 descr = stat_data(world_data, 'Country Name',
                 'United Arab Emirates', yeardes, indicator2)
 # returns a summary of descriptive statistics for a dataset
